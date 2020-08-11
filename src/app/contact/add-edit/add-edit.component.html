@@ -1,0 +1,262 @@
+<div class="card m-2">
+    <div class="card-header">
+        <h4 *ngIf="isAddMode">Add Contact</h4>
+        <h4 *ngIf="!isAddMode">Edit Contact</h4>
+    </div>
+    <div class="card-body">
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <fieldset>
+                <legend>
+                    <h6>Personal</h6>
+                </legend>
+                <div class="form-row">
+                    <div class="form-group col">
+                        <label for="firstName">First Name</label>
+                        <input type="text" formControlName="firstName" class="form-control"
+                            maxlength="100"
+                            [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+                        <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                            <div *ngIf="f.firstName.errors.required">First Name is required.</div>
+                        </div>
+                    </div>
+                    <div class="form-group col">
+                        <label for="lastName">Last Name</label>
+                        <input type="text" formControlName="lastName" class="form-control"
+                            maxlength="100"
+                            [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+                        <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+                            <div *ngIf="f.lastName.errors.required">Last Name is required.</div>
+                        </div>
+                    </div>
+                    <div class="form-group col">
+                        <label for="dob">Date of Birth</label>
+                        <div class="input-group">
+                            <input class="form-control" placeholder="mm/dd/yyyy" angular-mydatepicker name="dp"
+                                [ngClass]="{ 'is-invalid': submitted && f.dob.errors }"
+                                maxlength="10"
+                                formControlName="dob"
+                                [minDate]="minDate"
+                                [maxDate]="maxDate" 
+                                (click)="d.toggle()"
+                                ngbDatepicker #d="ngbDatepicker"/>
+                            <div class="input-group-append">
+                                <button type="button" class="btn btn-outline-secondary"
+                                    (click)="d.toggle()">
+                                    <i class="fa fa-calendar"></i>
+                                </button>
+                            </div>
+                            <div *ngIf="submitted && f.dob.errors" class="invalid-feedback">
+                                <div *ngIf="f.dob.errors.required">Date of birth is rquired.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col-md-4">
+                        <label for="title">Title</label>
+                        <input type="text" formControlName="title" class="form-control"
+                            maxlength="100"
+                            [ngClass]="{ 'is-invalid': submitted && f.title.errors }" />
+                        <div *ngIf="submitted && f.title.errors" class="invalid-feedback">
+                            <div *ngIf="f.title.errors.required">Title is required.</div>
+                        </div>
+                    </div>
+                    <div class="form-group col-md-4">
+                        <label labelFor="gender">Gender</label>
+                        <div class="form-group">
+                            <div class="form-check-inline" [ngClass]="{ 'is-invalid': submitted && f.gender.errors }">
+                                <label class="form-check-label" for="male">
+                                    <input class="form-check-input" type="radio" formControlName="gender" name="gender"
+                                        value="M"
+                                        [checked]="f.gender.value === 'M'">Male
+                                </label>
+                            </div>
+                            <div class="form-check-inline">
+                                <label class="form-check-label" for="female">
+                                    <input class="form-check-input" type="radio" formControlName="gender" name="gender"
+                                        value="F"
+                                        [checked]="f.gender.value === 'F'">Female
+                                </label>
+                            </div>
+                            <div *ngIf="submitted && f.gender.errors" class="invalid-feedback">
+                                <div *ngIf="f.gender.errors.required">
+                                    Gender is required.    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>
+                    <div class="row">
+                        <div class="col-auto mr-auto">
+                            <h6 style="margin-top: 8px !important;">Address</h6>
+                        </div>
+                        <div class="col-auto">
+                            <a *ngIf="showAddAddress" (click)="addAddress()" class="btn btn-sm btn-secondary mb-2 btn-icon">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </legend>
+                <div formArrayName="addresses" class="mb-3">
+                    <div *ngFor="let address of addresses.controls; let i=index">
+                        <div [formGroupName]="i">
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <div class="form-row">
+                                        <div class="form-group col-md-2">
+                                            <label for="type">Type</label>
+                                            <select type="text" formControlName="type" class="form-control"
+                                                [ngClass]="{ 'is-invalid': submitted && address.controls.type.errors }">
+                                                <option value="">Choose</option>
+                                                <option *ngFor="let atype of addressTypes" value="{{atype.code}}"
+                                                    [selected]="address.controls.type.value === atype.code">{{atype.value}}</option>
+                                            </select>
+                                            <div *ngIf="submitted && address.controls.type.errors" class="invalid-feedback">
+                                                <div *ngIf="address.controls.type.errors.required">Type is required.</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label for="number">Number</label>
+                                            <input type="text" formControlName="number" class="form-control" maxlength="10"
+                                                [ngClass]="{ 'is-invalid': submitted && address.controls.number.errors }" />
+                                            <div *ngIf="submitted && address.controls.number.errors" class="invalid-feedback">
+                                                <div *ngIf="address.controls.number.errors.required">Number is required.</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label for="unit">Unit</label>
+                                            <input type="text" formControlName="unit" class="form-control" maxlength="10"
+                                                [ngClass]="{ 'is-invalid': submitted && address.controls.unit.errors }" />
+                                            <div *ngIf="submitted && address.controls.unit.errors" class="invalid-feedback">
+                                                <div *ngIf="address.controls.unit.errors.required">Unit is required.</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col">
+                                            <label for="street">Street</label>
+                                            <a *ngIf="showRemoveAddress" class="btn btn-sm btn-danger float-sm-right close-button btn-icon" (click)="removeAddress(i)">
+                                                <i class="fa fa-times" aria-hidden="true"></i>
+                                            </a> 
+                                            <input type="text" formControlName="street" class="form-control" maxlength="255"
+                                                [ngClass]="{ 'is-invalid': submitted && address.controls.street.errors }" />
+                                            <div *ngIf="submitted && address.controls.street.errors" class="invalid-feedback">
+                                                <div *ngIf="address.controls.street.errors.required">Street is required.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-4">
+                                            <label for="city">City</label>
+                                            <input type="text" formControlName="city" class="form-control" maxlength="100"
+                                                [ngClass]="{ 'is-invalid': submitted && address.controls.city.errors }" />
+                                            <div *ngIf="submitted && address.controls.city.errors" class="invalid-feedback">
+                                                <div *ngIf="address.controls.city.errors.required">City is required.</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-2">
+                                            <label for="zipCode">Zip Code</label>
+                                            <input type="text" formControlName="zipCode" class="form-control" maxlength="6"
+                                                [ngClass]="{ 'is-invalid': submitted && address.controls.zipCode.errors }" />
+                                            <div *ngIf="submitted && address.controls.zipCode.errors" class="invalid-feedback">
+                                                <div *ngIf="address.controls.zipCode.errors.required">Zip code is required.</div>
+                                                <div *ngIf="address.controls.zipCode.errors.pattern">Enter number only.</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col">
+                                            <label for="state">State</label>
+                                            <select formControlName="state" class="form-control"
+                                                [ngClass]="{ 'is-invalid': submitted && address.controls.state.errors }">
+                                                <option value="">Choose</option>
+                                                <option *ngFor="let state of states" value="{{state.abbr}}"
+                                                    [selected]="address.controls.state.value === state.abbr">{{state.name}}</option>
+                                            </select>
+                                            <div *ngIf="submitted && address.controls.state.errors" class="invalid-feedback">
+                                                <div *ngIf="address.controls.state.errors.required">State is required.</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                            
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <fieldset>
+                <legend>
+                    <div class="row">
+                        <div class="col-auto mr-auto">
+                            <h6 style="margin-top: 8px !important;">Communication</h6>
+                        </div>
+                        <div class="col-auto">
+                            <a *ngIf="showAddContact" (click)="addContact()" class="btn btn-sm btn-secondary mb-2 btn-icon">
+                                <i class="fa fa-plus" aria-hidden="true"></i>
+                            </a>
+                        </div>
+                    </div>
+                </legend>
+                <div formArrayName="communications" class="mb-3">
+                    <div *ngFor="let contact of communications.controls; let cIndx=index">
+                        <div [formGroupName]="cIndx">
+                            <div class="card mb-2">
+                                <div class="card-body">
+                                    <a *ngIf="showRemoveContact" class="btn btn-sm btn-danger float-right btn-icon" (click)="removeContact(cIndx)">
+                                        <i class="fa fa-times" aria-hidden="true"></i>
+                                    </a>
+                                    <div class="form-row">
+                                        <div class="form-group col-md-2">
+                                            <label for="type">Type</label>
+                                            <select type="text" formControlName="type" class="form-control" (change)="changeContactType()"
+                                                [ngClass]="{ 'is-invalid': submitted && contact.controls.type.errors }" >
+                                                <option value="">Choose</option>
+                                                <option *ngFor="let ctype of contactTypes" value="{{ctype.code}}"
+                                                    [selected]="contact.controls.type.value === ctype.code">{{ctype.value}}</option>
+                                            </select>    
+                                            <div *ngIf="submitted && contact.controls.type.errors" class="invalid-feedback">
+                                                <div *ngIf="contact.controls.type.errors.required">Type is required.</div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col-md-4">
+                                            <label for="value">&nbsp;</label>
+                                            <input type="text" formControlName="value" class="form-control"
+                                                maxlength="50"
+                                                [ngClass]="{ 'is-invalid': submitted && contact.controls.value.errors }" />
+                                            <div *ngIf="submitted && contact.controls.value.errors" class="invalid-feedback">
+                                                <div *ngIf="contact.controls.value.errors.required">Value is required.</div>
+                                                <div *ngIf="contactErrorMessage">
+                                                    {{contactErrorMessage}}
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="form-group col" style="margin-top: 2.5rem !important;">
+                                            <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" formControlName="preferred" name="preferred"
+                                                    [checked]="contact.controls.preferred.value"
+                                                    (change)="contact.controls.preferred.value != contact.controls.preferred.value">
+                                                <label class="form-check-label" for="preferred">Preferred</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </fieldset>
+            <div class="form-row">
+                <div class="form-group">
+                    <button [disabled]="loading" class="btn btn-secondary">
+                        <span *ngIf="loading" class="spinner-border spinner-border-sm mr-1"></span>
+                        Save
+                    </button>&nbsp;
+                    <a routerLink="/contacts" class="btn btn-outline-danger">
+                        Cancel</a>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

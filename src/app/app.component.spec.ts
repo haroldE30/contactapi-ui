@@ -26,10 +26,4 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('contactapi-ui');
   });
 
-  it('should render title', () => {
-    const fixture = TestBed.createComponent(AppComponent);
-    fixture.detectChanges();
-    const compiled = fixture.nativeElement;
-    expect(compiled.querySelector('.content span').textContent).toContain('contactapi-ui app is running!');
-  });
 });

@@ -1,0 +1,59 @@
+<div class="card">
+    <div class="card-header">
+        <div class="row">
+            <div class="col-auto mr-auto">
+                <h4 style="text-align: left; vertical-align: middle;">
+                    Contacts
+                </h4>
+            </div>
+            <div class="col-auto">
+                <a routerLink="add" class="btn btn-sm btn-secondary mb-2 add-contact">
+                    <i class="fa fa-user-plus"></i>
+                    Add Contact</a>
+            </div>
+        </div>
+    </div>
+    <div class="card-body">
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th style="width: 20%" sortable="firstName" (sort)="onSort($event)">First Name</th>
+                        <th style="width: 20%" sortable="lastName" (sort)="onSort($event)">Last Name</th>
+                        <th style="width: 10%" sortable="dob" (sort)="onSort($event)">DOB</th>
+                        <th style="width: 10%">Gender</th>
+                        <th style="width: 30%" sortable="title" (sort)="onSort($event)">Title</th>
+                        <th style="width: 5%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let iden of contacts">
+                        <td></td>
+                        <td>{{iden.firstName}}</td>
+                        <td>{{iden.lastName}}</td>
+                        <td>{{iden.dob}}</td>
+                        <td>{{iden.gender === 'M' ? 'Male' : 'Female'}}</td>
+                        <td>{{iden.title}}</td>
+                        <td style="white-space: nowrap">
+                            <a routerLink="view/{{iden.id}}" class="action-icon" title="Details">
+                                <i class="fa fa-info-circle fa-lg" aria-hidden="true"></i>
+                            </a>
+                            <a routerLink="edit/{{iden.id}}" class="action-icon" title="Edit">
+                                <i class="fa fa-pencil-square-o fa-lg" aria-hidden="true"></i>
+                            </a>
+                            <a (click)="deleteId(iden.id)" class="action-icon" title="Delete">
+                                <i class="fa fa-trash-o fa-lg" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    <tr *ngIf="!contacts">
+                        <td colspan="4" class="text-center">
+                            <span class="spinner-border spinner-border-lg align-center"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

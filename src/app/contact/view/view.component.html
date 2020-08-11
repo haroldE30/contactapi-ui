@@ -1,0 +1,84 @@
+<div class="card">
+    <div class="card-header">
+        <h5>Details</h5>
+    </div>
+    <div class="card-body" *ngIf="contact">
+        <fieldset>
+            <legend>
+                <h6>Personal</h6>
+            </legend>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="firstName">First Name:</label>
+                </div>
+                <div class="form-group col">
+                    {{contact.firstName}}
+                </div>
+                <div class="form-group col-md-2">
+                    <label for="lastName">Last Name:</label>
+                </div>
+                <div class="form-group col">
+                    {{contact.lastName}}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label for="dob">Date of Birth:</label>
+                </div>
+                <div class="form-group col">
+                    {{contact.dob}}
+                </div>
+                <div class="form-group col-md-2">
+                    <label labelFor="gender">Gender:</label>
+                </div>
+                <div class="form-group col">
+                    {{contact.gender === 'M' ? 'Male' : 'Female'}}
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group col-md-2">
+                    <label labelFor="title">Title:</label>
+                </div>
+                <div class="form-group col">
+                    {{contact.title}}
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>
+                <h6>Address</h6>
+            </legend>
+            <div *ngFor="let address of contact.addresses">
+                <div class="form-row">
+                    <div class="form-group col">
+                        {{address.type | titlecase}}
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group col">
+                        {{address.number}} {{address.unit}} {{address.street}}, {{address.city}}, {{address.zipCode}}
+                        {{address.state}}
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <fieldset>
+            <legend>
+                <h6>contact</h6>
+            </legend>
+            <div *ngFor="let contact of contact.communications">
+                <div class="form-row">
+                    <div class="form-group col">
+                        {{contact.type | titlecase}}: {{contact.value}} &nbsp;&nbsp;&nbsp; {{contact.preferred ? '(Preferred)' : ''}}
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+        <div class="">&nbsp;</div>
+        <div class="form-group">
+            <a routerLink="/contacts" class="btn btn-outline-danger">
+                Back to List
+            </a>
+        </div>
+    </div>
+</div>

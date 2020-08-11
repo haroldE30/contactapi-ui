@@ -1,0 +1,12 @@
+.action-icon {
+    padding-left: 10px;
+}
+
+.add-contact {
+    color: #ffffff !important;
+}
+
+a:link, a:hover, a:visited {
+    text-decoration: none;
+    color: inherit;
+}
