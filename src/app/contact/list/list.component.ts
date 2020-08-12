@@ -1,3 +1,4 @@
+import { AlertService } from './../../_services/alert.service';
 import { SortableHeader, SortEvent, compare } from './sortable.directive';
 import { Contact } from '../../_models/contact';
 import { ContactService } from './../../_services/contact.service';
@@ -14,7 +15,8 @@ export class ListComponent implements OnInit {
   @ViewChildren(SortableHeader) headers: QueryList<SortableHeader>;
 
   constructor(
-    private idService: ContactService
+    private idService: ContactService,
+    private alertService: AlertService
   ) { }
 
   ngOnInit(): void {
@@ -50,11 +52,11 @@ export class ListComponent implements OnInit {
     this.idService.delete(id).pipe(first())
     .subscribe(
       res => {
-        console.log('Contact deleted successfully.');
+        this.alertService.success('Contact deleted successfully.', { autoClose: true, keepAfterRouteChange: true });
         this.contacts = this.contacts.filter((x:Contact) => x.id !== id);
       },
       error => {
-        console.log('Failed to delete contact', error);
+        this.alertService.error(error, { autoClose: false, keepAfterRouteChange: true });
       }
     );
   }

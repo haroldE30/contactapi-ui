@@ -1,3 +1,4 @@
+import { AlertService } from './../../_services/alert.service';
 import { MyValidator } from './../../_shared/my-validator';
 import { CustomDateParserFormatter } from './../../_services/custom-date-parser-formatter.';
 import { Communication } from '../../_models/communication';
@@ -51,7 +52,8 @@ export class AddEditComponent implements OnInit {
     private fb: FormBuilder,
     private router: Router,
     private dateFormatter: NgbDateParserFormatter,
-    private validator: MyValidator
+    private validator: MyValidator,
+    private alertService: AlertService
   ) { }
     
   public get f() {
@@ -246,11 +248,11 @@ export class AddEditComponent implements OnInit {
       .pipe(first())
       .subscribe(
         success => {
-          console.error('Contact saved successfully.')
+          this.alertService.success('Contact saved successfully.', { autoClose: true, keepAfterRouteChange: true });
           this.router.navigate(['/contacts']);
         },
         error => {
-          console.error(error);
+          this.alertService.error(error, { autoClose: false, keepAfterRouteChange: true });
           this.loading = false;
         }
       );
@@ -261,11 +263,11 @@ export class AddEditComponent implements OnInit {
       .pipe(first())
       .subscribe(
         success => {
-          console.error('Contact updated successfully.')
+          this.alertService.success('Contact updated successfully.', { autoClose: true, keepAfterRouteChange: true });
           this.router.navigate(['/contacts']);
         },
         error => {
-          console.error(error);
+          this.alertService.error(error, { autoClose: false, keepAfterRouteChange: true });
           this.loading = false;
         }
       );
