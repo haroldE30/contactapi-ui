@@ -209,7 +209,7 @@
                                     <div class="form-row">
                                         <div class="form-group col-md-2">
                                             <label for="type">Type</label>
-                                            <select type="text" formControlName="type" class="form-control" (change)="changeContactType()"
+                                            <select formControlName="type" class="form-control" (change)="changeContactType($event.target.value, cIndx)"
                                                 [ngClass]="{ 'is-invalid': submitted && contact.controls.type.errors }" >
                                                 <option value="">Choose</option>
                                                 <option *ngFor="let ctype of contactTypes" value="{{ctype.code}}"

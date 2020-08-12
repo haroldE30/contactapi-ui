@@ -197,20 +197,7 @@ export class AddEditComponent implements OnInit {
 
     this.contactErrorMessage = '';
     for (let c of this.communications.controls) {
-      if (c.get('type').value === this.contactTypes[0].code &&
-        !this.validator.emailValidator(c.get('value').value)) {
-        this.contactErrorMessage = 'Enter a valid email.';
-        c.get('value').setErrors({ 'incorrect': true });
-        return;
-      } else if (c.get('type').value === this.contactTypes[1].code &&
-        !this.validator.mobileValidator(c.get('value').value)) {
-        this.contactErrorMessage = 'Enter a valid format i.e +91-036-78658 or 91-036-78658';
-        c.get('value').setErrors({ 'incorrect': true });
-        return;
-      } else if ((c.get('type').value === this.contactTypes[2].code ||
-        c.get('type').value === this.contactTypes[3].code) &&
-        !this.validator.phoneValidator(c.get('value').value)) {
-        this.contactErrorMessage = 'Enter a valid format i.e 800-555-5555';
+      if (!this.validCommunication(c.get('type').value, c.get('value').value)) {
         c.get('value').setErrors({ 'incorrect': true });
         return;
       }
@@ -224,8 +211,34 @@ export class AddEditComponent implements OnInit {
     }
   }
 
-  changeContactType() {
+  changeContactType(type: string, index: number) {
     this.contactErrorMessage = '';
+    let value = this.communications.controls[index].get('value').value;
+
+    if (!this.validCommunication(type, value)) {
+      this.communications.controls[index].get('value').setErrors({ 'incorrect': true });
+    } else {
+      this.communications.controls[index].setErrors({'value': null});
+      this.communications.controls[index].get('value').setValue(value);
+    }
+  }
+
+  private validCommunication(type: string, value: string): boolean {
+    if (type === this.contactTypes[0].code &&
+      !this.validator.emailValidator(value)) {
+      this.contactErrorMessage = 'Enter a valid email.';
+      return false;
+    } else if (type === this.contactTypes[1].code &&
+      !this.validator.mobileValidator(value)) {
+      this.contactErrorMessage = 'Enter a valid format i.e +91-234-56789 or 91-234-56789';
+      return false;
+    } else if ((type === this.contactTypes[2].code ||
+      type === this.contactTypes[3].code) &&
+      !this.validator.phoneValidator(value)) {
+      this.contactErrorMessage = 'Enter a valid format i.e 800-555-5555';
+      return false;
+    }
+    return true;
   }
 
   private createContact() {
