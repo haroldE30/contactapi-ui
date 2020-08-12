@@ -222,9 +222,6 @@ export class AddEditComponent implements OnInit {
     } else {
       this.updateContact();
     }
-    this.form.reset();
-    this.addresses.clear();
-    this.communications.clear();
   }
 
   changeContactType() {
