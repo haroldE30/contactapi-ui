@@ -66,7 +66,7 @@
             <legend>
                 <h6>Communication</h6>
             </legend>
-            <div *ngFor="let contact of contact.communications">
+            <div *ngFor="let contact of communications">
                 <div class="form-row">
                     <div class="form-group col">
                         {{contact.type | titlecase}}: {{contact.value}} &nbsp;&nbsp;&nbsp; {{contact.preferred ? '(Preferred)' : ''}}
